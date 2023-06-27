@@ -29,10 +29,15 @@ print(json_data)
 fields = ['T1', 'T2', 'T3', 'T4', 'T6', 'P1', 'P2']
 values = {}
 
+# pobieranie wartości z schemaParams jeśli istnieje, w przeciwnym razie z curr
 for field in fields:
-    if field in json_data['curr']:
+    if 'schemaParams' in json_data and f'schema_{field}' in json_data['schemaParams']:
+        value = float(json_data['schemaParams'][f'schema_{field}'][0][0][0])
+    elif 'curr' in json_data and field in json_data['curr']:
         value = float(json_data['curr'][field])
-        values[field] = value
+    else:
+        continue
+    values[field] = value
 
 # Pobranie Uzysk_ca_kowity z curr
 if 'Uzysk_ca_kowity' in json_data['curr']:
